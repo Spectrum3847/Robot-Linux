@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+echo "Starting IMU TCP Server, Port 8881"
+python /etc/init.d/imu-server.py&
+echo "IMU Server Finished starting"

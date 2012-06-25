@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+echo "Starting CAM TCP Server, Port 8882"
+python /etc/init.d/cam-server.py&
+echo "CAM Server Finished starting"
