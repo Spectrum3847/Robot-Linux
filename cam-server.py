@@ -17,6 +17,7 @@ pixels = [(0,0), (0,0), (0,0), (0,0)]
 pixel_data = ""
 #redpill_or_bluepill = 1
 ON_BONE = 0
+ON_PI = 0
 capture = None
 writer = None
 
@@ -34,22 +35,18 @@ def returnCAMmessage():
 				"\n: " + str(pixels[3][1])
 
 
-class EchoRequestHandler(SocketServer.BaseRequestHandler ):
+class EchoRequestHandler(SocketServer.BaseRequestHandler):
 	def setup(self):
 		 print self.client_address, 'connected!'
 
 	def handle(self):
 		global pixel_data
-		#global redpill_or_bluepill
+
 		data = 'dummy'
 		while data:
 			if data:
 				self.request.sendall(pixel_data)
-				#if not (str(data).find("A")):
-				#redpill_or_bluepill = "A"
-				#elif not (str(data).find("B")):
-				#redpill_or_bluepill = "B"
-		data = self.request.recv(8)
+			data = self.request.recv(1)
 		print data
 
 	def finish(self):
@@ -57,6 +54,8 @@ class EchoRequestHandler(SocketServer.BaseRequestHandler ):
 
 
 def sig_handle(signal,frame):
+	global capture
+	global writer
 	print 'Exiting'
 	del(capture)
 	del(writer)
@@ -93,7 +92,8 @@ def main(*args):
 	if ON_BONE:
 		capture = cv.CaptureFromFile("http://10.38.47.11/mjpg/video.mjpg?resolution=640x480&.mjpg")
 	else:
-		capture = cv.CaptureFromFile("video.asf")
+		print "Not Bone or Pi"
+		capture = cv.CaptureFromFile("vision.mp4")
 	print "capture done"
 
 	if ON_BONE:
@@ -150,13 +150,13 @@ def main(*args):
 		##split the channels up so we can filter them individually
 		cv.Split(hsvImage, hue, sat, val, None)
 
-		upperhueval = 90
+		upperhueval = 80
 		lowerhueval = 30
 		uppersatval = 255
-		lowersatval = 150
-		uppervalval = 255
-		lowervalval = 100
-		dilateval = 2
+		lowersatval = 210
+		uppervalval = 112
+		lowervalval = 39 
+		dilateval = 5
 		approxval = 35
 
 		##only keeps values in respective channels that are within ranges specified

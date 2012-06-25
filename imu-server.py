@@ -142,7 +142,7 @@ class EchoRequestHandler(SocketServer.BaseRequestHandler ):
 		while data:
 			if data:
 				self.request.sendall(serial_data)
-		data = self.request.recv(8)
+			data = self.request.recv(8)
 
 	def finish(self): # Tells us when we have a client has disconnected
 		print self.client_address, 'disconnected!'
