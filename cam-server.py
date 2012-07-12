@@ -25,14 +25,14 @@ def returnCAMmessage():
 		
 	global pixels
 
-	return		"\n: " + str(pixels[0][0]) + \
-				"\n: " + str(pixels[0][1]) + \
-				"\n: " + str(pixels[1][0]) + \
-				"\n: " + str(pixels[1][1]) + \
-				"\n: " + str(pixels[2][0]) + \
-				"\n: " + str(pixels[2][1]) + \
-				"\n: " + str(pixels[3][0]) + \
-				"\n: " + str(pixels[3][1])
+	return		str(pixels[0][0]).zfill(3) + \
+				str(pixels[0][1]).zfill(3) + \
+				str(pixels[1][0]).zfill(3) + \
+				str(pixels[1][1]).zfill(3) + \
+				str(pixels[2][0]).zfill(3) + \
+				str(pixels[2][1]).zfill(3) + \
+				str(pixels[3][0]).zfill(3) + \
+				str(pixels[3][1]).zfill(3)
 
 
 class EchoRequestHandler(SocketServer.BaseRequestHandler):
