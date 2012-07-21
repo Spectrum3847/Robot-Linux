@@ -1,5 +1,6 @@
-vision.*
 *.avi
 *.mp4
 *.asf
 *.mpg
+*.pyc
+*.m4p

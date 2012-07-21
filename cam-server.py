@@ -15,9 +15,10 @@ SET UP / INSTANTIATION
 """
 pixels = [(0,0), (0,0), (0,0), (0,0)]
 pixel_data = ""
-#redpill_or_bluepill = 1
-ON_BONE = 0
-ON_PI = 0
+
+(CAM, NET, VID) = (0, 0, 1)
+ON_BONE, ON_PI = (0, 0)
+
 capture = None
 writer = None
 
@@ -68,6 +69,9 @@ def main(*args):
 	global pixels
 	global pixel_data
 	global ON_BONE
+	global ON_PI
+	global height
+	global width
 	global capture
 	global writer
 	#global redpill_or_bluepill
@@ -89,10 +93,14 @@ def main(*args):
 	lower level video library used by OpenCV
 	possible workaround by using command line utilities to bind to file stream
 	'''
-	if ON_BONE:
+	if NET:
 		capture = cv.CaptureFromFile("http://10.38.47.11/mjpg/video.mjpg?resolution=640x480&.mjpg")
-	else:
+	elif CAM:
 		print "Not Bone or Pi"
+		capture = cv.CaptureFromCAM(1)
+		cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_FRAME_WIDTH, width)
+		cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_FRAME_HEIGHT, height)
+	elif VID:
 		capture = cv.CaptureFromFile("vision.mp4")
 	print "capture done"
 
@@ -104,8 +112,6 @@ def main(*args):
 		print "Capture Error"
 		sys.exit()
 
-	height = 480
-	width = 640
 
 	fourcc = cv.CV_FOURCC('M', 'J', 'P', 'G')
 	fps = 10 
@@ -133,8 +139,16 @@ def main(*args):
 	w = cv.RGB(255,255,255)
 	b = cv.RGB(0,0,0)
 
+	upperhueval = 100
+	lowerhueval = 10
+	uppersatval = 255
+	lowersatval = 140
+	uppervalval = 255
+	lowervalval = 140 
+	dilateval = 5
+	approxval = 35
+
 	while True:
-		# print redpill_or_bluepill
 
 		rawImage = cv.QueryFrame(capture)
 		if rawImage is None:
@@ -149,15 +163,6 @@ def main(*args):
 
 		##split the channels up so we can filter them individually
 		cv.Split(hsvImage, hue, sat, val, None)
-
-		upperhueval = 80
-		lowerhueval = 30
-		uppersatval = 255
-		lowersatval = 210
-		uppervalval = 112
-		lowervalval = 39 
-		dilateval = 5
-		approxval = 35
 
 		##only keeps values in respective channels that are within ranges specified
 		cv.InRangeS(hue, lowerhueval, upperhueval, hue) ## red 80-240 #hue 65-100
@@ -206,6 +211,7 @@ def main(*args):
 		for s in squares:
 			if len(squares) > 0:
 				pixels = s
+				print "Tracking"
 			else:
 				pixels = [(0,0), (0,0), (0,0), (0,0)]
 

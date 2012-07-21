@@ -9,8 +9,9 @@ print "Please adjust values, then press ESC to begin, and ESC again to exit."
 Instantiate a bunch of variables
 """
 
-#capture=cv.CaptureFromCAM(1) ##run from camera
-capture = cv.CaptureFromFile('vision.asf') ##run from video
+capture=cv.CaptureFromCAM(0) ##run from camera
+#capture = cv.CaptureFromFile('http://10.38.47.11/mjpg/video.mjpg?resolution=640x480&.mjpg') ##run from video
+#capture=cv.CaptureFromFile('vision.mp4')
 if capture is None:
     print 'No capture found!'
     exit
@@ -256,9 +257,9 @@ while True:
     ##    cv.WriteFrame(writer, rawImage)
 ##    cv.ShowImage('Filtered', hsvImage)
     cv.ShowImage('Camera', rawImage)
-##    cv.ShowImage('Hue Filter', hue)
-##    cv.ShowImage('Sat Filter', sat)
-##    cv.ShowImage('Val Filter', val)
+    cv.ShowImage('Hue Filter', hue)
+    cv.ShowImage('Sat Filter', sat)
+    cv.ShowImage('Val Filter', val)
     cv.ShowImage('HueSatVal', hsvImage)
     """
     DONE WITH WINDOWS
