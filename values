@@ -2,3 +2,8 @@ Logitech c110 default contrast
 Hue(R): 10  70
 Sat(G): 220 255
 Val(B): 110 140
+
+Logitech c110 highest contrast
+Hue(R): 70  130
+Sat(G): 110 255
+Val(B): 104 255

@@ -17,7 +17,7 @@ pixels = [(0,0), (0,0), (0,0), (0,0)]
 pixel_data = ""
 
 (CAM, NET, VID) = (0, 0, 1)
-ON_BONE, ON_PI = (0, 0)
+ON_BONE, ON_PI = (0, 1)
 
 capture = None
 writer = None
@@ -93,10 +93,17 @@ def main(*args):
 	lower level video library used by OpenCV
 	possible workaround by using command line utilities to bind to file stream
 	'''
+	
+	if not ON_PI && not ON_BONE:
+		print "Not Bone or Pi"
+	elif ON_BONE:
+		print "On Bone"
+	else:
+		print "On Pi"
+
 	if NET:
 		capture = cv.CaptureFromFile("http://10.38.47.11/mjpg/video.mjpg?resolution=640x480&.mjpg")
 	elif CAM:
-		print "Not Bone or Pi"
 		capture = cv.CaptureFromCAM(1)
 		cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_FRAME_WIDTH, width)
 		cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_FRAME_HEIGHT, height)
