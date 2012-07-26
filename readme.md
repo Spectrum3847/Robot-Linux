@@ -1,6 +1,6 @@
 # IMU and Camera Servers
 
-**Authors:** Matthew Skolaut and Patrick Graniham
+**Authors:** Matthew Skolaut and Patrick Granahan
 
 ## About
 IMU Server and Camera Server are two TCP data servers designed to run on a linux based co-processor for FIRST Robotics, but can easily be used in many other applications.
