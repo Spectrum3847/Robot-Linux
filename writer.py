@@ -22,7 +22,7 @@ if capture is None:
 font = cv.InitFont(cv.CV_FONT_HERSHEY_PLAIN, 1.0, 1.0, 0, 1, cv.CV_AA);
 fourcc = cv.CV_FOURCC('M', 'J', 'P', 'G')
 fps = 30
-writer = cv.CreateVideoWriter('testwriter1.avi', 0, fps, (width, height), 1)
+writer = cv.CreateVideoWriter('calibrate1.avi', 0, fps, (width, height), 1)
 
 t = time.clock()
 
