@@ -79,6 +79,8 @@ def saturation(x):
     return
 def contrast(x):
     return
+def huey(x):
+    return
 
 cv.CreateTrackbar('UpperHue', 'HueSatVal', 0, 255, changeUpperHueval)
 cv.CreateTrackbar('LowerHue', 'HueSatVal', 0, 255, changeLowerHueval)
@@ -114,6 +116,8 @@ cv.CreateTrackbar('Dilate', 'Filtered', 0, 10, dilate)
 cv.CreateTrackbar('Approx', 'Filtered', 0, 100, approx)
 cv.CreateTrackbar('Saturation', 'Camera', 0, 255, saturation)
 cv.CreateTrackbar('Contrast', 'Camera', 0, 255, contrast)
+cv.CreateTrackbar('huey', 'Camera', 0, 255, huey)
+cv.SetTrackbarPos('huey', 'Camera', 200)
 cv.SetTrackbarPos('Saturation', 'Camera', 200)
 cv.SetTrackbarPos('Contrast', 'Camera', 200)
 cv.SetTrackbarPos('Delay', 'Camera', 200)
@@ -133,8 +137,10 @@ cv.WaitKey() ==27
 while True:
     saturation = cv.GetTrackbarPos('Saturation', 'Camera')
     contrast = cv.GetTrackbarPos('Contrast', 'Camera')
-    cv.SetCapturePropterty(capture, cv.CV_CAP_PROP_CONTRAST, contrast)
-    cv.SetCapturePropterty(capture, cv.CV_CAP_PROP_SATURATION, saturation)
+    huey = cv.GetTrackbarPos('huey', 'Camera')
+    cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_HUE, huey)
+    cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_CONTRAST, contrast)
+    cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_SATURATION, saturation)
     
     rawImage = cv.QueryFrame(capture)
     if rawImage is None:
