@@ -77,6 +77,12 @@ def dilate(x):
     return
 def approx(x):
     return
+def saturation(x):
+    return
+def contrast(x):
+    return
+def huey(x):
+    return
 
 cv.CreateTrackbar('UpperHue', 'HueSatVal', 0, 255, changeUpperHueval)
 cv.CreateTrackbar('LowerHue', 'HueSatVal', 0, 255, changeLowerHueval)
@@ -110,6 +116,12 @@ cv.SetTrackbarPos('LowerVal', 'HueSatVal', 100)
 cv.CreateTrackbar('Delay', 'Camera', 1, 3000, delay)
 cv.CreateTrackbar('Dilate', 'Filtered', 0, 10, dilate)
 cv.CreateTrackbar('Approx', 'Filtered', 0, 100, approx)
+cv.CreateTrackbar('Saturation', 'Camera', 0, 255, saturation)
+cv.CreateTrackbar('Contrast', 'Camera', 0, 255, contrast)
+cv.CreateTrackbar('huey', 'Camera', 0, 255, huey)
+cv.SetTrackbarPos('huey', 'Camera', 200)
+cv.SetTrackbarPos('Saturation', 'Camera', 200)
+cv.SetTrackbarPos('Contrast', 'Camera', 200)
 cv.SetTrackbarPos('Delay', 'Camera', 200)
 cv.SetTrackbarPos('Dilate', 'Filtered', 2)
 cv.SetTrackbarPos('Approx', 'Filtered', 35)
@@ -125,6 +137,13 @@ total =0.0
 possible =1.0
 cv.WaitKey() ==27
 while True:
+    saturation = cv.GetTrackbarPos('Saturation', 'Camera')
+    contrast = cv.GetTrackbarPos('Contrast', 'Camera')
+    huey = cv.GetTrackbarPos('huey', 'Camera')
+    cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_HUE, huey)
+    cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_CONTRAST, contrast)
+    cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_SATURATION, saturation)
+    
     rawImage = cv.QueryFrame(capture)
     if rawImage is None:
         print 'End of capture / no frame available'
@@ -133,6 +152,7 @@ while True:
         cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_POS_AVI_RATIO, 0)
         rawImage =cv.QueryFrame(capture)
 
+    
     """
     ACTUAL FILTERING BEGINS HERE
     """
