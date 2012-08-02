@@ -16,11 +16,16 @@ SET UP / INSTANTIATION
 pixels = [(0,0), (0,0), (0,0), (0,0)]
 pixel_data = ""
 
-(CAM, NET, VID) = (0, 0, 1)
-ON_BONE, ON_PI = (0, 1)
+(CAM, NET, VID) = (1, 0, 0)
+ON_BONE, ON_PI = (0, 0)
 
 capture = None
 writer = None
+
+width, height = (320, 240)
+
+
+
 
 def returnCAMmessage():
 		
@@ -93,20 +98,16 @@ def main(*args):
 	lower level video library used by OpenCV
 	possible workaround by using command line utilities to bind to file stream
 	'''
-	
-	if not ON_PI && not ON_BONE:
-		print "Not Bone or Pi"
-	elif ON_BONE:
-		print "On Bone"
-	else:
-		print "On Pi"
-
 	if NET:
 		capture = cv.CaptureFromFile("http://10.38.47.11/mjpg/video.mjpg?resolution=640x480&.mjpg")
 	elif CAM:
-		capture = cv.CaptureFromCAM(1)
+		print "Not Bone or Pi"
+		capture = cv.CaptureFromCAM(-1)
 		cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_FRAME_WIDTH, width)
 		cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_FRAME_HEIGHT, height)
+		cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_SATURATION, 200)
+                cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_HUE, 200)
+		cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_CONTRAST, 0)
 	elif VID:
 		capture = cv.CaptureFromFile("vision.mp4")
 	print "capture done"
@@ -146,14 +147,14 @@ def main(*args):
 	w = cv.RGB(255,255,255)
 	b = cv.RGB(0,0,0)
 
-	upperhueval = 100
-	lowerhueval = 10
-	uppersatval = 255
-	lowersatval = 140
+	upperhueval = 255
+	lowerhueval = 143
+	uppersatval = 203
+	lowersatval = 138
 	uppervalval = 255
-	lowervalval = 140 
-	dilateval = 5
-	approxval = 35
+	lowervalval = 140
+	dilateval = 4
+	approxval = 31
 
 	while True:
 
@@ -206,7 +207,7 @@ def main(*args):
 			p = cv.ApproxPoly(hull, storage, cv.CV_POLY_APPROX_DP, approxval, 0)
 		
 			## A (good) square must: 1. Be convex, 2. Have four vertices, 3. Have a large area
-			if (cv.CheckContourConvexity(p) != 0) and (len(p) == 4) and (cv.ContourArea(p) >= 5000):
+			if (cv.CheckContourConvexity(p) != 0) and (len(p) == 4) and (cv.ContourArea(p) >= 100):
 				squares.append(p)
 			else:
 				badPolys.append(p)
@@ -219,8 +220,9 @@ def main(*args):
 			if len(squares) > 0:
 				pixels = s
 				print "Tracking"
-			else:
-				pixels = [(0,0), (0,0), (0,0), (0,0)]
+	
+		if not squares:
+			pixels = [(0,0), (0,0), (0,0), (0,0)]
 
 		pixel_data = returnCAMmessage()
 		

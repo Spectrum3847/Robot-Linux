@@ -8,25 +8,27 @@ print "Please adjust values, then press ESC to begin, and ESC again to exit."
 """
 Instantiate a bunch of variables
 """
+
 height = 240
 width = 320
 
-capture=cv.CaptureFromCAM(1) ##run from camera
+capture=cv.CaptureFromCAM(-1) ##run from camera
 cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_FRAME_WIDTH, width)
 cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_FRAME_HEIGHT, height)
-cv.SetCaptureProperty(capture, cv.CV_CAP_PROP_SATURATION, 255)
 
-#capture = cv.CaptureFromFile('http://10.38.47.133/GetStream') ##run from video
+#capture = cv.CaptureFromFile('http://10.38.47.11/mjpg/video.mjpg?resolution=640x480&.mjpg') ##run from video
 #capture=cv.CaptureFromFile('vision.mp4')
 if capture is None:
     print 'No capture found!'
     exit
-
+    
+height = 240
+width = 320
 
 ##Font, fourcc, fps, and writer are all used to save processed video
 font = cv.InitFont(cv.CV_FONT_HERSHEY_PLAIN, 1.0, 1.0, 0, 1, cv.CV_AA);
 fourcc = cv.CV_FOURCC('M', 'J', 'P', 'G')
-fps = 60
+fps = 30
 writer = cv.CreateVideoWriter('compression4.avi', 0, fps, (width, height), 1)
 
 ##varying depths for the images: depth 3 means 3 channels, depth 1 means a binary image
@@ -178,7 +180,7 @@ while True:
         area = cv.ContourArea(p)
         ##Ultimately determines what is a rectangle
         ## Must be convex, have 4 vertices, and have an area > 5000 and < 18000
-        if (cv.CheckContourConvexity(p) != 0) and (len(p) == 4) and (cv.ContourArea(p) >= 500):
+        if (cv.CheckContourConvexity(p) != 0) and (len(p) == 4) and (cv.ContourArea(p) >= 2000):
             squares.append(p)
         else:
             badPolys.append(p)
@@ -188,10 +190,6 @@ while True:
 ##    cv.PolyLine(rawImage, badPolys, 1, r, 1, cv.CV_AA)
     ##draws targets in green
     cv.PolyLine(rawImage, squares, 1, g, 1, cv.CV_AA)
-    while (contours != None) and (len(contours) > 0):
-        hull = cv.ConvexHull2(contours, storage, cv.CV_COUNTER_CLOCKWISE, 1)
-        p = cv.ApproxPoly(hull, storage, cv.CV_POLY_APPROX_DP, cv.GetTrackbarPos('Approx', 'Filtered'), 0) ##45 is a magic number: how accurate the rectangle should be
-
     for s in squares:        
         br = cv.BoundingRect(s,0) ##BoundingRectangles are just CvRectangles, so they store data as (x, y, width, height)
         ##Calculate and draw the center of the rectangle based on the BoundingRect

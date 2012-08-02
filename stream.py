@@ -190,7 +190,7 @@ if __name__ == '__main__':
   signal.signal(signal.SIGTERM, quit)
   
   #Localhost, Port 8080, camres=320x240, fps=6
-  http_server = HTTPServer(server_address=("",8080),
+  http_server = HTTPServer(server_address=("",80),
                             cam_dev="/dev/video0",
                             cam_res=(320,240),
                             cam_fps=6)
